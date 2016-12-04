@@ -34,6 +34,7 @@ public class Sling : MonoBehaviour {
         GameObject rock = joint.connectedBody.gameObject;
         joint.connectedBody.gravityScale = 1f;
         joint.connectedBody.drag = 1f;
-        joint.connectedBody = null;        
+        joint.connectedBody = null;
+        Time.timeScale = 1f;
     }
 }
