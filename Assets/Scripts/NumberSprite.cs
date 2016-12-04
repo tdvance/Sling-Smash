@@ -5,7 +5,7 @@ using UnityEngine;
 public class NumberSprite : MonoBehaviour {
     public GameObject[] digits;
 
-    public void ShowNumber(int number, Vector3 position, float time = 1f) {
+    public void ShowNumber(int number, Vector3 position, Color color, float time = 1f) {
 
         GameObject[] toSpawn = createDigits(number);
         float maxwidth = 0;
@@ -13,12 +13,28 @@ public class NumberSprite : MonoBehaviour {
             maxwidth = Mathf.Max(obj.GetComponent<SpriteRenderer>().sprite.bounds.extents.x * 2f, maxwidth);
         }
         float offset = maxwidth * toSpawn.Length / 2;
-
+        float scale = 1;
+        if (number > 1000) {
+            scale = 2;
+        }else {
+            if(number < 500) {
+                scale = .75f;
+                if(number < 250) {
+                    scale = .5f;
+                    if(number < 100) {
+                        scale = .25f;
+                    }
+                }
+            }
+        }
         foreach (GameObject obj in toSpawn) {
             GameObject d = Instantiate(obj, position, Quaternion.identity);
+            d.transform.localScale = new Vector3(scale, scale, 1);
+            Color c = d.GetComponent<SpriteRenderer>().color;
+            d.GetComponent<SpriteRenderer>().color = new Color(c.r, c.g, c.b, scale);
             d.transform.position = position - d.transform.right * offset;
             offset -= maxwidth;
-            Destroy(d, time);
+            Destroy(d, time*2*scale);
         }
 
     }

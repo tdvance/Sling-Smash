@@ -38,7 +38,7 @@ public class Smashable : MonoBehaviour {
                 int s = (int)Mathf.Round(scoreFromDamage * Mathf.Pow(damage, scoreFromDamageExponent));
                 scoreDisplay.score += s;
                 if (s >= 10) {
-                    FindObjectOfType<NumberSprite>().ShowNumber(s, transform.position - Vector3.forward, 0.5f);
+                    FindObjectOfType<NumberSprite>().ShowNumber(s, transform.position - Vector3.forward, gameObject.GetComponent<SpriteRenderer>().color, 0.5f);
                 }
 
                 if (health <= 0) {
@@ -52,7 +52,7 @@ public class Smashable : MonoBehaviour {
 
     public void Die() {
         scoreDisplay.score += scoreFromDeath;
-        FindObjectOfType<NumberSprite>().ShowNumber(scoreFromDeath, transform.position-Vector3.forward, 0.5f);
+        FindObjectOfType<NumberSprite>().ShowNumber(scoreFromDeath, transform.position - Vector3.forward, gameObject.GetComponent<SpriteRenderer>().color, 0.5f);
         Destroy(gameObject);
     }
 }
