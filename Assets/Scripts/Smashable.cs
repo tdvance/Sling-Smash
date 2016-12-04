@@ -5,9 +5,9 @@ using UnityEngine;
 public class Smashable : MonoBehaviour {
 
     public float health = 100;
-    float scoreFromDamage = 1f;
-    float scoreFromDamageExponent = 1.5f;
-    int scoreFromDeath = 100;
+    public float scoreFromDamage = 1f;
+    public float scoreFromDamageExponent = 1.5f;
+    public int scoreFromDeath = 100;
     public ScoreDisplay scoreDisplay;
 
 
@@ -35,7 +35,11 @@ public class Smashable : MonoBehaviour {
                     damage = health;
                 }
                 health -= damage;
-                scoreDisplay.score += (int)Mathf.Round(scoreFromDamage * Mathf.Pow(damage, scoreFromDamageExponent));
+                int s = (int)Mathf.Round(scoreFromDamage * Mathf.Pow(damage, scoreFromDamageExponent));
+                scoreDisplay.score += s;
+                if (s >= 10) {
+                    FindObjectOfType<NumberSprite>().ShowNumber(s, transform.position - Vector3.forward, 0.5f);
+                }
 
                 if (health <= 0) {
                     Die();
@@ -48,6 +52,7 @@ public class Smashable : MonoBehaviour {
 
     public void Die() {
         scoreDisplay.score += scoreFromDeath;
+        FindObjectOfType<NumberSprite>().ShowNumber(scoreFromDeath, transform.position-Vector3.forward, 0.5f);
         Destroy(gameObject);
     }
 }
