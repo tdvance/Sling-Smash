@@ -1,17 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Sling : MonoBehaviour {
     public float forceMultiplier = 25;
+    public Button endLevelButton;
+    public GameObject[] rocks;
+    public Vector3 relativeRockPosition = new Vector3(0, -4, 0);
 
     HingeJoint2D joint;
     Vector3 lastPos;
+    int whichRock;
+
 
     // Use this for initialization
     void Start() {
         joint = GetComponent<HingeJoint2D>();
         lastPos = transform.position;
+        endLevelButton.interactable = false;
+        whichRock = 0;
+        GetARock();
     }
 
     // Update is called once per frame
@@ -27,7 +36,7 @@ public class Sling : MonoBehaviour {
     }
 
     public void DragStart() {
-        //do nothing
+        Time.timeScale = 0.5f;
     }
 
     public void Release() {
@@ -36,5 +45,23 @@ public class Sling : MonoBehaviour {
         joint.connectedBody.drag = 1f;
         joint.connectedBody = null;
         Time.timeScale = 1f;
+        if (whichRock < rocks.Length) {
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = 0;
+            Invoke("GetARock", 1);
+        } else {
+            endLevelButton.interactable = true;
+        }
+    }
+
+    public void GetARock() {
+        GameObject rock = Instantiate(rocks[whichRock], transform.position + relativeRockPosition, Quaternion.identity);
+        Rigidbody2D rb = rock.GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0f;
+        joint.connectedBody = rb;
+        whichRock++;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = 0;
     }
 }
