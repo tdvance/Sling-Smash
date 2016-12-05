@@ -13,11 +13,12 @@ public class Sling : MonoBehaviour {
     Vector3 lastPos;
     int whichRock;
     GameObject currentRock;
-
+    Game game;
 
 
     // Use this for initialization
     void Start() {
+        game = FindObjectOfType<Game>();
         joint = GetComponent<HingeJoint2D>();
         lastPos = transform.position;
         endLevelButton.interactable = false;
@@ -34,6 +35,9 @@ public class Sling : MonoBehaviour {
                 joint.connectedBody.AddTorque(-forceMultiplier * amount, ForceMode2D.Impulse);
             }
             lastPos = transform.position;
+        }
+        if (game.currentEnemyCount == 0 && currentRock) {
+            endLevelButton.interactable = true;
         }
     }
 
