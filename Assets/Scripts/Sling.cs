@@ -12,6 +12,8 @@ public class Sling : MonoBehaviour {
     HingeJoint2D joint;
     Vector3 lastPos;
     int whichRock;
+    GameObject currentRock;
+
 
 
     // Use this for initialization
@@ -37,6 +39,10 @@ public class Sling : MonoBehaviour {
 
     public void DragStart() {
         Time.timeScale = 0.5f;
+        if (currentRock) {
+            Destroy(currentRock);
+        }
+        currentRock = joint.connectedBody.gameObject;
     }
 
     public void Release() {
@@ -63,5 +69,9 @@ public class Sling : MonoBehaviour {
         whichRock++;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = 0;
+    }
+
+    public int WhichRock() {
+        return whichRock;
     }
 }
