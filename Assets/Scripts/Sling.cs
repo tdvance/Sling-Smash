@@ -42,11 +42,13 @@ public class Sling : MonoBehaviour {
     }
 
     public void DragStart() {
-        Time.timeScale = 0.5f;
+        Time.timeScale = 0.25f;
         if (currentRock) {
             Destroy(currentRock);
         }
-        currentRock = joint.connectedBody.gameObject;
+        if (joint.connectedBody) {
+            currentRock = joint.connectedBody.gameObject;
+        }
     }
 
     public void Release() {
@@ -61,6 +63,7 @@ public class Sling : MonoBehaviour {
             rb.angularVelocity = 0;
             Invoke("GetARock", 1);
         } else {
+            whichRock++;
             endLevelButton.interactable = true;
         }
     }
@@ -72,7 +75,7 @@ public class Sling : MonoBehaviour {
         joint.connectedBody = rb;
         whichRock++;
         rb.velocity = Vector3.zero;
-        rb.angularVelocity = 0;
+        rb.angularVelocity = 0;       
     }
 
     public int WhichRock() {
